@@ -1,7 +1,6 @@
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import Link from "next/link";
 
-type Product = {
+export type Product = {
   brand: string;
   category: string;
   description: string;
@@ -15,37 +14,16 @@ type Product = {
   title: string;
 };
 
-type ApiResponse = Product[];
-
-export default function ProductList({
-  getAllProducts,
+export default async function ProductList({
+  products,
 }: {
-  getAllProducts: () => Promise<ApiResponse>;
+  products: Product[];
 }) {
-  const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const apiProducts = await getAllProducts();
-        setProducts(apiProducts);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, [getAllProducts]);
-
   return (
     <ul>
       {products.map((productItem) => (
-        <li
-          onClick={() => router.push(`/products/${productItem.id}`)}
-          key={productItem.id}
-        >
-          {productItem.brand}
+        <li key={productItem.id}>
+          <Link href={`/products/${productItem.id}`}>{productItem.brand}</Link>
         </li>
       ))}
     </ul>

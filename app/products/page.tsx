@@ -1,5 +1,3 @@
-"use client";
-import { useState, useEffect } from "react";
 import ProductList from "@/components/product-list";
 
 // Create the fetchAllProducts function
@@ -17,18 +15,8 @@ async function fetchAllProducts() {
   return []; // Return an empty array in case of no products
 }
 
-export default function Products() {
-  const [products, setProducts] = useState([]);
+export default async function Products() {
+  const products = await fetchAllProducts();
 
-  useEffect(() => {
-    // Fetch products when the component mounts on the client side
-    const fetchProducts = async () => {
-      const products = await fetchAllProducts();
-      setProducts(products);
-    };
-
-    fetchProducts();
-  }, []);
-
-  return <ProductList getAllProducts={() => Promise.resolve(products)} />;
+  return <ProductList products={products} />;
 }
